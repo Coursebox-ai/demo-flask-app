@@ -30,3 +30,4 @@ $ poetry shell
 
 ## DUMMY
 - Trigger 28th June 13:15
+- Trigger 28th June 13:27
