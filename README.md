@@ -32,3 +32,4 @@ $ poetry shell
 - Trigger 28th June 13:15
 - Trigger 28th June 13:27
 - Trigger 28th June 19:54
+- Trigger 29th June 13:16
