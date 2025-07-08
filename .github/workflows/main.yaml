@@ -23,7 +23,7 @@ jobs:
   build:
     if: github.event_name != 'pull_request'
     secrets: inherit
-    uses: Coursebox-ai/coursebox-action@v1
+    uses: Coursebox-ai/coursebox-action@main
     with:
       project: coursebox-ai-dev
       project_number: 214599382085
