@@ -34,6 +34,7 @@ jobs:
       - name: build and deploy
         uses: Coursebox-ai/coursebox-action@v1
         with:
+          environment: dev
           project: coursebox-ai-dev
           project_number: 214599382085
           workload_identity_pool_id: github
