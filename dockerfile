@@ -1,52 +1,35 @@
-# Ref - https://gist.github.com/soof-golan/6ebb97a792ccd87816c0bda1e6e8b8c2
+# Use official Python base image
+FROM python:3.11-slim
 
-FROM python:3.12 AS python-base
+# Set environment variables
+ENV PYTHONUNBUFFERED=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
 
-# https://python-poetry.org/docs#ci-recommendations
-ENV POETRY_VERSION=1.2.0
-ENV POETRY_HOME=/opt/poetry
-ENV POETRY_VENV=/opt/poetry-venv
+# Install curl and Rust (for uv), then install uv
+RUN apt-get update && \
+    apt-get install -y curl gcc libffi-dev libssl-dev rustc && \
+    curl -LsSf https://astral.sh/uv/install.sh | sh && \
+    ln -s /root/.cargo/bin/uv /usr/local/bin/uv && \
+    apt-get remove -y gcc rustc && \
+    apt-get autoremove -y && \
+    rm -rf /var/lib/apt/lists/*
 
-# Tell Poetry where to place its cache and virtual environment
-ENV POETRY_CACHE_DIR=/opt/.cache
 
-# Create stage for Poetry installation
-FROM python-base AS poetry-base
 
-# Creating a virtual environment just for poetry and install it with pip
-RUN python3 -m venv $POETRY_VENV \
-  && $POETRY_VENV/bin/pip install -U pip setuptools \
-  && $POETRY_VENV/bin/pip install poetry 
-
-# Create a new stage from the base python image
-FROM python-base AS demo-flask-app
-
-# Copy Poetry to app image
-COPY --from=poetry-base ${POETRY_VENV} ${POETRY_VENV}
-
-# Add Poetry to PATH
-ENV PATH="${PATH}:${POETRY_VENV}/bin"
-
+# Set working directory
 WORKDIR /app
 
-# Copy Dependencies
-COPY poetry.lock pyproject.toml README.md ./
+# Copy dependency files
+COPY app/pyproject.toml .
 
-RUN poetry config virtualenvs.path --unset
-RUN poetry config virtualenvs.in-project true  --local
+# Install dependencies
+RUN uv pip install -r <(uv pip compile pyproject.toml)
 
-# [OPTIONAL] Validate the project is properly configured
-RUN poetry check  
+# Copy the rest of the app
+COPY app/ .
 
-# Install Dependencies
-RUN poetry install --no-interaction --no-cache
-# RUN poetry install --no-interaction --no-cache --without dev
-
-# Copy Application
-COPY demo_flask_app .
-
-RUN ls -lah
-
-# Run Application
+# Expose Flask port
 EXPOSE 5000
-CMD [ "poetry", "run", "python", "-m", "flask", "run", "--host=0.0.0.0" ]
+
+# Run the app
+CMD ["python", "app.py"]
