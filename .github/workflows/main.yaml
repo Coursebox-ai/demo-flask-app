@@ -36,3 +36,5 @@ jobs:
         with:
           project: coursebox-ai-dev
           project_number: 214599382085
+          workload_identity_pool_id: github
+          workload_identity_provider_id: github
