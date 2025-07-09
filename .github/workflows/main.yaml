@@ -29,7 +29,7 @@ jobs:
 
     steps:
       - name: build and deploy
-        uses: Coursebox-ai/coursebox-action@main
+        uses: Coursebox-ai/coursebox-action@v1
         with:
           project: coursebox-ai-dev
           project_number: 214599382085
