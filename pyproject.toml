@@ -5,11 +5,13 @@ description = ""
 authors = [
   { name = "Your Name", email = "you@example.com" }
 ]
-readme = "README.md"
 
-[tool.poetry.dependencies]
-python = "^3.12"
-flask = "^3.0.3"
+dependencies [
+  "python=^3.12"
+ " flask=^3.0.3"
+
+]
+readme = "README.md"
 
 
 [build-system]
