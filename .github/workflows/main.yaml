@@ -24,6 +24,8 @@ jobs:
     if: github.event_name != 'pull_request'
     secrets: inherit
     
+    runs-on: ubuntu-latest  # ✅ Required for job execution environment
+
     steps:
       - name: build and deploy
         uses: Coursebox-ai/coursebox-action@main
