@@ -25,7 +25,8 @@ jobs:
     secrets: inherit
     
     steps:
-      - uses: Coursebox-ai/coursebox-action@main
+      - name: build and deploy
+        uses: Coursebox-ai/coursebox-action@main
         with:
           project: coursebox-ai-dev
           project_number: 214599382085
