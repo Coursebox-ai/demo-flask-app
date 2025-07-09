@@ -28,6 +28,9 @@ jobs:
     runs-on: ubuntu-latest  # ✅ Required for job execution environment
 
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1  # Use shallow clone to only send this branch
       - name: build and deploy
         uses: Coursebox-ai/coursebox-action@v1
         with:
