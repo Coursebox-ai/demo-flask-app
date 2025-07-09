@@ -1,19 +1,7 @@
 # Use official Python base image
-FROM python:3.13-slim
-
-# Set environment variables
-ENV PYTHONUNBUFFERED=1 \
-    PIP_DISABLE_PIP_VERSION_CHECK=1
-
-# Install curl and Rust (for uv), then install uv
-RUN apt-get update && \
-    apt-get install -y curl gcc libffi-dev libssl-dev rustc && \
-    curl -LsSf https://astral.sh/uv/install.sh | sh && \
-    ln -s /root/.cargo/bin/uv /usr/local/bin/uv && \
-    apt-get remove -y gcc rustc && \
-    apt-get autoremove -y && \
-    rm -rf /var/lib/apt/lists/*
-
+FROM python:3.12-slim-bookworm
+FROM python:3.12-slim-bookworm
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 
 # Set working directory
