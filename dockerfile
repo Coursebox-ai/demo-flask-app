@@ -1,5 +1,5 @@
 # Use official Python base image
-FROM python:3.11-slim
+FROM python:3.13-slim
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1 \
@@ -23,7 +23,7 @@ WORKDIR /app
 COPY app/pyproject.toml .
 
 # Install dependencies
-RUN uv pip install -r <(uv pip compile pyproject.toml)
+RUN uv sync
 
 # Copy the rest of the app
 COPY app/ .
@@ -32,4 +32,4 @@ COPY app/ .
 EXPOSE 5000
 
 # Run the app
-CMD ["python", "app.py"]
+CMD ["python", "-m", "flask", "run", "--host=0.0.0.0" ]
