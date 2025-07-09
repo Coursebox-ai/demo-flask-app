@@ -21,8 +21,9 @@ permissions:
 
 jobs:
   build:
+    name: build and deploy
     if: github.event_name != 'pull_request'
-    secrets: inherit
+    # secrets: inherit
     
     runs-on: ubuntu-latest  # ✅ Required for job execution environment
 
