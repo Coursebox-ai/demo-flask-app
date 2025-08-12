@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Copy pyproject.toml and optionally uv.lock first to leverage Docker caching
 COPY app/pyproject.toml .
-COPY app/uv.lock .  # optional if you have a lock file
+# COPY app/uv.lock .  # optional if you have a lock file
 
 # Install dependencies into system Python
 RUN uv sync --frozen --system
