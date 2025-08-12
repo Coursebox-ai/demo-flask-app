@@ -44,7 +44,7 @@ jobs:
           workload_identity_provider_id: github
           organization: Coursebox-ai
           gitops_repository: ArgoCD
-          kustomize_directory:  apps/${{ github.event.repository.name }}/overlays/dev/
+          kustomize_directory:  manifests/${{ github.event.repository.name }}/overlays/dev/
           GH_APP_ID: ${{ secrets.GH_APP_ID }}
           GH_APP_PRIVATE_KEY: ${{ secrets.GH_APP_PRIVATE_KEY }}
 
