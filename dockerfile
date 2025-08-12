@@ -1,23 +1,21 @@
-# Use official Python base image
-FROM python:3.12-slim-bookworm
-
-# Optionally copy uv binary if you need it
+# Stage 1: Base Python with uv installed
+FROM python:3.12-slim-bookworm AS base
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-# Set working directory
 WORKDIR /app
 
-# Copy dependency files
-COPY app/pyproject.toml app/poetry.lock ./
+# Copy pyproject.toml and optionally uv.lock first to leverage Docker caching
+COPY app/pyproject.toml .
+COPY app/uv.lock .  # optional if you have a lock file
 
-# Install dependencies
-RUN uv pip install --system --requirement <(uv pip compile pyproject.toml)
+# Install dependencies into system Python
+RUN uv sync --frozen --system
 
-# Copy the rest of the app
+# Copy application code
 COPY app/ .
 
 # Expose Flask port
 EXPOSE 5000
 
-# Run the app
+# Run Flask
 CMD ["python", "-m", "flask", "run", "--host=0.0.0.0"]
