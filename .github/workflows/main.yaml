@@ -28,6 +28,8 @@ jobs:
     
     runs-on: ubuntu-latest  # ✅ Required for job execution environment
 
+    secrets: inherit
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -35,7 +37,6 @@ jobs:
 
       - name: build and deploy
         id: dev
-        secrets: inherit
         uses: Coursebox-ai/coursebox-action@v1
         with:
           environment: dev
