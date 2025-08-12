@@ -14,5 +14,5 @@ RUN pip install --upgrade pip && pip install .
 # Copy the rest of the app
 COPY . .
 
-# Run the Flask app with Uvicorn
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "5000"]
+# Run the Flask app
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
