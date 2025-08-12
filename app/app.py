@@ -1,23 +1,12 @@
-from flask import Flask,render_template,request,jsonify,redirect
+from flask import Flask
+from asgi_lifespan import LifespanManager
+from asgiref.wsgi import WsgiToAsgi
 
-app = Flask(__name__)
+flask_app = Flask(__name__)
 
-"""
+@flask_app.route("/")
+def hello():
+    return "Hello from Flask + Uvicorn!"
 
-This is the main Flask app.
-Few changes to flask entry point comment.
-"""
-@app.route("/")
-def home():
-    return render_template("index.html")
-
-
-
-"""
-
-This is the main Flask app.
-Few changes to flask entry point comment.
-"""
-@app.route("/hello")
-def index():
-    return "hello! how are you!"
+# ASGI adapter
+app = WsgiToAsgi(flask_app)
