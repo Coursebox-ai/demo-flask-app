@@ -23,6 +23,7 @@ jobs:
   build:
     name: build and deploy
     if: github.event_name != 'pull_request'
+    environment: dev
     # secrets: inherit
     
     runs-on: ubuntu-latest  # ✅ Required for job execution environment
@@ -31,11 +32,30 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1  # Use shallow clone to only send this branch
+
       - name: build and deploy
+        id: dev
         uses: Coursebox-ai/coursebox-action@v1
         with:
           environment: dev
-          project: coursebox-ai-dev
-          project_number: 214599382085
+          project: ${{ secrets.PROJECT }}
+          project_number: ${{ secrets.PROJECT_NUMBER }}
           workload_identity_pool_id: github
           workload_identity_provider_id: github
+          organization: Coursebox-ai
+          gitops_repository: ArgoCD
+          kustomize_directory:  apps/${{ github.event.repository.name }}/overlays/dev/
+
+      # - name: build and deploy
+      #   uses: Coursebox-ai/coursebox-action@v1
+      #   needs:
+      #   - dev
+      #   with:
+      #     environment: prod
+      #     project: coursebox-ai-dev
+      #     project_number: 214599382085
+      #     workload_identity_pool_id: github
+      #     workload_identity_provider_id: github
+      #     organization: Coursebox-ai
+      #     gitops_repository: ArgoCD
+      #     kustomize_directory:  apps/${{ github.event.repository.name }}/overlays/prod/
